@@ -32,7 +32,7 @@ class RegisterRequest extends FormRequest
             'username' => 'required|unique:users|min:5|max:15',
             'password' => 'required|min:8|max:20',
             'firstname' => 'required',
-            'email' => 'required|email',
+            'email' => 'required|email|unique:users',
             'address' => 'required',
             'phone_number' => 'required|numeric|unique:users'
         ];

@@ -2,11 +2,12 @@
 
 namespace App\Traits;
 
-use Illuminate\Http\Response;
+use Illuminate\Http\JsonResponse;
+use Symfony\Component\HttpFoundation\Response;
 
 trait ApiResponse
 {
-    public function successResponse($message, $data = '', $statusCode = Response::HTTP_OK)
+    public function successResponse($message, $data = null, $statusCode = Response::HTTP_OK): JsonResponse
     {
         return response()->json([
             'status' => true,
@@ -15,7 +16,7 @@ trait ApiResponse
         ], $statusCode);
     }
 
-    public function errorResponse($message, $data = null, $statusCode = Response::HTTP_INTERNAL_SERVER_ERROR)
+    public function errorResponse($message, $data = null, $statusCode = Response::HTTP_INTERNAL_SERVER_ERROR): JsonResponse
     {
         return response()->json([
             'status' => false,
@@ -24,7 +25,7 @@ trait ApiResponse
         ], $statusCode);
     }
 
-    public function errorValidationResponse($data, $message = 'Validation input error', $statusCode = Response::HTTP_UNPROCESSABLE_ENTITY)
+    public function errorValidationResponse($data, $message = 'Validation input error', $statusCode = Response::HTTP_UNPROCESSABLE_ENTITY): JsonResponse
     {
         return response()->json([
             'status' => false,

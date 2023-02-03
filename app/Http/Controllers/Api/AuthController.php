@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Http\Resources\LoginResource;
+use App\Http\Resources\UserDetailResource;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Api\ApiController;
 use App\Http\Requests\LoginRequest;
@@ -28,7 +30,7 @@ class AuthController extends ApiController
 
         $token = $user->createToken('auth_token')->plainTextToken;
         $data = [
-            'user' => $user,
+            'user' => new LoginResource($user),
             'access_token' => $token,
             'token_type' => 'Bearer',
         ];
@@ -48,6 +50,13 @@ class AuthController extends ApiController
             'address' => $request->address,
         ]);
 
-        return $this->successResponse('Created user successfully', $user);
+        return $this->successResponse('Created user successfully', new UserDetailResource($user));
+    }
+
+    public function logout()
+    {
+        $user = Auth::user();
+        $user->tokens()->where('id', $user->currentAccessToken()->id)->delete();
+        return $this->successResponse('Successfully logged out');
     }
 }
